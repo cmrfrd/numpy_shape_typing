@@ -1,0 +1,35 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.poetry]
+authors = [
+  "Alex Comerford <alex@taoa.io>",
+]
+description = "Numpy shape checking."
+license = "MIT"
+name = "src"
+version = "0.0.1"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+black = "^23.1.0"
+pylint = "^2.16.2"
+pyright = "^1.1.294"
+typing-extensions = "^4.5.0"
+
+[[tool.pyright.overrides]]
+
+
+[tool.black]
+line-length = 110
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 110
+py_version = '39'
+
+[tool.pylint.messages_control]
+max-line-length = 110
+disable = "invalid-name"
