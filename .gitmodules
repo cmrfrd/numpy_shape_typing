@@ -1,0 +1,3 @@
+[submodule "submodules/numpy"]
+	path = submodules/numpy
+	url = git@github.com:cmrfrd/numpy.git
