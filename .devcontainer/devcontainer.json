@@ -1,0 +1,54 @@
+{
+	"name": "local",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"[python]": {
+					"editor.tabSize": 4,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					}
+				},
+				"editor.formatOnSave": true,
+				"git.ignoreMissingGitWarning": true,
+				"python.analysis.useLibraryCodeForTypes": true,
+				"python.defaultInterpreterPath": "/opt/project/.venv/bin/python",
+				"python.formatting.blackPath": "/opt/project/.venv/bin/black",
+				"python.formatting.provider": "black",
+				"python.isort.args": [
+					"--profile",
+					"black"
+				],
+				"python.languageServer": "None",
+				"python.linting.enabled": true,
+				"python.linting.lintOnSave": true,
+				"python.linting.mypyEnabled": false,
+				"python.linting.mypyPath": "/opt/project/.venv/bin/pyright",
+				"python.linting.pylintArgs": [
+					"--verbose"
+				],
+				"python.linting.pylintEnabled": true,
+				"python.linting.pylintPath": "/opt/project/.venv/bin/pylint",
+				"terminal.integrated.profiles.linux": {
+					"bash (container default)": {
+						"path": "/bin/bash",
+						"overrideName": true
+					}
+				},
+				"workbench.iconTheme": "vscode-icons"
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-pyright.pyright",
+				"vscode-icons-team.vscode-icons"
+			]
+		}
+	},
+	"service": "dev",
+	"userEnvProbe": "loginInteractiveShell",
+	"workspaceFolder": "/workspace",
+	"remoteUser": "user"
+}
