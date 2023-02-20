@@ -1,0 +1,70 @@
+FROM python:3.11-slim as numpybuilder
+
+## setup numpy deps
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y \
+    && apt-get -y install \
+    curl \
+    git \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+RUN python -m pip install cython
+
+## copy numpy submodule + git stuff and build
+COPY submodules/numpy /submodules/numpy
+COPY .git /.git
+WORKDIR /submodules/numpy/
+RUN python setup.py build_ext --inplace
+
+FROM python:3.11-slim as dev
+
+## Top level args / env vars
+ARG USERNAME=user
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+## Apt based dependencies
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y \
+    && apt-get -y install \
+    curl \
+    git \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+## Create unpriv user
+RUN groupadd --gid 1001 $USERNAME \
+    && useradd --uid $USER_UID --gid 1001 -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+## Install python deps
+RUN mkdir -p /opt/project && chown user -R /opt/
+RUN python3 -m pip install poetry
+COPY --chown=user pyproject.toml poetry.lock /opt/project/
+USER $USERNAME
+WORKDIR /opt/project/
+RUN poetry config virtualenvs.in-project true
+RUN poetry install --no-root
+
+## Install built numpy
+COPY --from=numpybuilder --chown=${USER_UID}:${USER_GID} /submodules/numpy /submodules/numpy
+COPY --chown=${USER_UID}:${USER_GID} .git /.git
+RUN poetry add /submodules/numpy
+
+## Add default entrypoint
+ENV SHELL /bin/bash
+COPY ./entrypoint.sh /
+RUN sudo chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+## Make unpriv user use poetry env in default shell
+USER root
+RUN echo "source /entrypoint.sh" >> /etc/profile
+USER $USERNAME
