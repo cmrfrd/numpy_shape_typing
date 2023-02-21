@@ -82,11 +82,6 @@ def matsum(x1: NDArray[Shape[T1], GenericType_co], axis: Literal[0], /) -> Gener
     ...
 
 
-@overload
-def matsum(x1: NDArray[Shape[T1], GenericType_co], axis: Literal[0], /) -> GenericType_co:
-    ...
-
-
 def matsum(x1, axis=0):
     return np.sum(x1, axis=axis)
 
