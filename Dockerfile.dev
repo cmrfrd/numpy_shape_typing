@@ -58,6 +58,11 @@ COPY --from=numpybuilder --chown=${USER_UID}:${USER_GID} /submodules/numpy /subm
 COPY --chown=${USER_UID}:${USER_GID} .git /.git
 RUN poetry add /submodules/numpy
 
+## Add package
+ADD numpy_shape_typing/* /opt/project/numpy_shape_typing/
+RUN poetry install
+
+
 ## Add default entrypoint
 ENV SHELL /bin/bash
 COPY ./entrypoint.sh /
