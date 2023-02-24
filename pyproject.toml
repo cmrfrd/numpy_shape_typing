@@ -8,8 +8,11 @@ authors = [
 ]
 description = "Numpy shape checking."
 license = "MIT"
-name = "src"
+name = "numpy_shape_typing"
 version = "0.0.1"
+packages = [
+    { include = "numpy_shape_typing" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
