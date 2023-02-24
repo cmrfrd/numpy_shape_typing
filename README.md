@@ -2,7 +2,19 @@
 
 alex@taoa.io
 
-This repo is a POC of using [Variadic Generics](https://peps.python.org/pep-0646/) in [pyright](https://github.com/microsoft/pyright) to shape type numpy arrays.
+This repo is a POC of using [Variadic Generics](https://peps.python.org/pep-0646/) and [pyright](https://github.com/microsoft/pyright) to shape type numpy arrays.
+
+This gives us the ability to include shape types so we can write numpy code like this:
+
+```
+def Linear(
+    A: NDArray[Shape[T1, T2], GenericType_co],
+    x: NDArray[Shape[T2, ONE], GenericType_co],
+    b: NDArray[Shape[T1, ONE], GenericType_co],
+) -> NDArray[Shape[T1, ONE], GenericType_co]:
+    Ax: NDArray[Shape[T1, ONE], GenericType_co] = matmul(A, x)
+    return matadd(Ax, b)
+```
 
 For accessibility and reproducibility, a devcontainer + docker is provided.
 
