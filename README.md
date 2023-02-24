@@ -6,7 +6,7 @@ This repo is a POC of using [Variadic Generics](https://peps.python.org/pep-0646
 
 This gives us the ability to include shape types so we can write numpy code like this:
 
-```
+```python
 def Linear(
     A: NDArray[Shape[T1, T2], GenericType_co],
     x: NDArray[Shape[T2, ONE], GenericType_co],
