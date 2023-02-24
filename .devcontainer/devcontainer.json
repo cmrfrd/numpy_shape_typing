@@ -26,7 +26,6 @@
 				"python.linting.enabled": true,
 				"python.linting.lintOnSave": true,
 				"python.linting.mypyEnabled": false,
-				"python.linting.mypyPath": "/opt/project/.venv/bin/pyright",
 				"python.linting.pylintArgs": [
 					"--verbose"
 				],
