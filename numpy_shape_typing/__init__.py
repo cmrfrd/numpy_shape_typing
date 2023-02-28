@@ -1,25 +1,40 @@
-"""
-Example of using numpy.typing with numpy 1.20.0 to type-check a function
-with shape and dtype annotations.
-"""
-
-from typing import Literal, Tuple, TypeVar, TypeVarTuple, Unpack
+from typing import TypeVar
 
 import numpy as np
+from numpy.typing import NDArray
 
-from numpy_shape_typing.fake_alegebraic import ALL_NUMS_Union
+GenericDType = TypeVar("GenericDType", bound=np.generic)
 
-T1 = TypeVar("T1", bound=ALL_NUMS_Union)
-T2 = TypeVar("T2", bound=ALL_NUMS_Union)
-T3 = TypeVar("T3", bound=ALL_NUMS_Union)
-T4 = TypeVar("T4", bound=ALL_NUMS_Union)
-T5 = TypeVar("T5", bound=ALL_NUMS_Union)
-Shape = Tuple
-Shape1D = Shape[T1]
-Shape2D = Shape[T1, T2]
-ShapeND = Shape[T1, ...]
-Shape1DType = TypeVar("Shape1DType", bound=Shape1D)
-Shape2DType = TypeVar("Shape2DType", bound=Shape2D)
-ShapeNDType = TypeVar("ShapeNDType", bound=ShapeND)
-ShapeVarGen = TypeVarTuple("ShapeVarGen")
-GenericType_co = TypeVar("GenericType_co", bound=np.generic)
+
+def Linear(
+    A: NDArray[GenericDType],
+    x: NDArray[GenericDType],
+    b: NDArray[GenericDType],
+) -> NDArray[GenericDType]:
+    """
+    Args:
+        A: ndarray of shape (M x N)
+        x: ndarray of shape (N x 1)
+        b: ndarray of shape (M x 1)
+
+    Returns:
+        Linear output ndarray of shape (M)
+    """
+    assert len(A.shape) == 2, f"A must be of dim 2, not {len(A.shape)}"
+    Am, An = A.shape
+
+    assert x.shape == (An, 1), f"X must be shape ({An}, 1) to do matmul"
+    Ax: NDArray[GenericDType] = np.matmul(A, x)  # Shape (M x 1)
+
+    assert b.shape == (Am, 1), f"Bias term must be shape ({Am}, 1)"
+    result: NDArray[GenericDType] = np.add(Ax, b)  # (M x 1) + (M x 1)
+
+    ravel_result: NDArray[GenericDType] = np.ravel(result)
+    assert ravel_result.shape == (Am,), f"Uh oh, ravel result is shape {ravel_result.shape} and not {(Am,)}"
+    return ravel_result
+
+
+A: NDArray[np.uint8] = np.random.randint(low=0, high=2, size=(10, 10), dtype=np.uint8)
+x: NDArray[np.uint8] = np.random.randint(low=0, high=2, size=(10, 10), dtype=np.uint8)
+b: NDArray[np.uint16] = np.random.randint(low=0, high=2, size=(10, 10), dtype=np.uint16)
+y: NDArray[np.uint8] = Linear(A, x, b)
