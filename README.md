@@ -8,11 +8,11 @@ This gives us the ability to include shape types so we can write numpy code like
 
 ```python
 def Linear(
-    A: NDArray[Shape[T1, T2], GenericType_co],
-    x: NDArray[Shape[T2, ONE], GenericType_co],
-    b: NDArray[Shape[T1, ONE], GenericType_co],
-) -> NDArray[Shape[T1, ONE], GenericType_co]:
-    Ax: NDArray[Shape[T1, ONE], GenericType_co] = matmul(A, x)
+    A: NDArray[Shape[T1, T2], GenericDType],
+    x: NDArray[Shape[T2, ONE], GenericDType],
+    b: NDArray[Shape[T1, ONE], GenericDType],
+) -> NDArray[Shape[T1, ONE], GenericDType]:
+    Ax: NDArray[Shape[T1, ONE], GenericDType] = matmul(A, x)
     return matadd(Ax, b)
 ```
 
