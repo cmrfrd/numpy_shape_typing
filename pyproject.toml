@@ -20,6 +20,7 @@ black = "^23.1.0"
 pylint = "^2.16.2"
 pyright = "^1.1.294"
 typing-extensions = "^4.5.0"
+inflect = "^6.0.2"
 
 [[tool.pyright.overrides]]
 

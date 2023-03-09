@@ -62,7 +62,6 @@ RUN poetry add /submodules/numpy
 ADD numpy_shape_typing/* /opt/project/numpy_shape_typing/
 RUN poetry install
 
-
 ## Add default entrypoint
 ENV SHELL /bin/bash
 COPY ./entrypoint.sh /
@@ -72,4 +71,8 @@ ENTRYPOINT ["/entrypoint.sh"]
 ## Make unpriv user use poetry env in default shell
 USER root
 RUN echo "source /entrypoint.sh" >> /etc/profile
+RUN echo "#!/usr/bin/env bash\n/entrypoint.sh python \$@" >> /usr/local/bin/py && \
+    chmod +x /usr/local/bin/py
 USER $USERNAME
+
+ENV PYRIGHT_PYTHON_FORCE_VERSION="latest"
