@@ -8,12 +8,13 @@ This gives us the ability to include shape types so we can write numpy code like
 
 ```python
 def Linear(
-    A: NDArray[Shape[T1, T2], GenericDType],
-    x: NDArray[Shape[T2, ONE], GenericDType],
-    b: NDArray[Shape[T1, ONE], GenericDType],
-) -> NDArray[Shape[T1, ONE], GenericDType]:
-    Ax: NDArray[Shape[T1, ONE], GenericDType] = matmul(A, x)
-    return matadd(Ax, b)
+    A: NDArray[Shape2D[T1, T2], GenericDType],
+    x: NDArray[Shape2D[T2, ONE], GenericDType],
+    b: NDArray[Shape2D[T1, ONE], GenericDType],
+) -> NDArray[Shape1D[T1], GenericDType]:
+    Ax = dot(A, x)
+    Axb = add(Ax, b)
+    return ravel(Axb)
 ```
 
 For accessibility and reproducibility, a devcontainer + docker is provided.

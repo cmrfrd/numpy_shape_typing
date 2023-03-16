@@ -244,8 +244,6 @@ ShapeND = Shape[ALL_NUMS_Union, ...]
 
 ShapeNDType = TypeVar("ShapeNDType", bound=ShapeND)
 
-# GenericDType = np.dtype[TypeVar("GenericDType", bound=np.generic)]
-# GenericDType = TypeVar("GenericDType", bound=np.generic)
 GenericDType = TypeVar("GenericDType", bound=Any)
 
 # Generated with:

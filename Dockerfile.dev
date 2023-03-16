@@ -71,8 +71,9 @@ ENTRYPOINT ["/entrypoint.sh"]
 ## Make unpriv user use poetry env in default shell
 USER root
 RUN echo "source /entrypoint.sh" >> /etc/profile
-RUN echo "#!/usr/bin/env bash\n/entrypoint.sh python \$@" >> /usr/local/bin/py && \
+RUN echo "#!/usr/bin/env bash\n/entrypoint.sh python \$@ 2>/dev/null" >> /usr/local/bin/py && \
     chmod +x /usr/local/bin/py
 USER $USERNAME
 
 ENV PYRIGHT_PYTHON_FORCE_VERSION="latest"
+ENV PYTHONWARNINGS="ignore"

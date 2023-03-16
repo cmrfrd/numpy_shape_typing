@@ -3,7 +3,7 @@ from typing import Literal, overload
 import numpy as np
 from numpy.typing import NDArray
 
-from numpy_shape_typing.fake_alegebraic import (
+from numpy_shape_typing.types import (
     EIGHT,
     FIVE,
     FOUR,
