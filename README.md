@@ -31,4 +31,4 @@ git checkout v1.24.2.dev1
 popd
 ```
 
-2. Open `src/__init__.py` in a VSCode / codespaces and try modifying the types of the linear equation implementation at the bottom on the file.
+2. Open `src/linear.py` in a VSCode / codespaces and try modifying the types of the linear implementation.
